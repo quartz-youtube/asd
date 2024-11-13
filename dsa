@@ -3,5 +3,10 @@ $sysInfo = @{
     "OS" = (Get-WmiObject -Class Win32_OperatingSystem).Caption
     "Processor" = (Get-WmiObject -Class Win32_Processor).Name
 }
+
+Write-Host "System Info: $($sysInfo | Out-String)"
+
 $jsonData = $sysInfo | ConvertTo-Json
-Invoke-RestMethod -Uri "https://webhook.site/91df8830-246b-47e1-854f-349d2cf870da" -Method Post -Body $jsonData -ContentType "application/json"
+Write-Host "JSON Data: $jsonData"
+
+Invoke-WebRequest -Uri "https://webhook.site/91df8830-246b-47e1-854f-349d2cf870da" -Method Post -Body $jsonData -ContentType "application/json"
